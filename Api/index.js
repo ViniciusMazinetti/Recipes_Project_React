@@ -1,5 +1,6 @@
 const express = require('express')
 const server = express()
+const userRoute = require('./userRoute')
 
 const cors = require('cors')
 const db = require("./Config/dbConnect")
@@ -10,12 +11,6 @@ db.once("open", () => {
 })
 
 server.use(cors())
-server.use(express.json())
-
-server.get('/', (req, res) => {
-  res.json({
-    message: "Bem vindo..."
-  })
-})
+server.use(express.json(), userRoute)
 
 module.exports = server
