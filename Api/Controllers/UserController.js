@@ -74,7 +74,7 @@ class UserController {
                 email
             })
 
-           return user
+           res.status(200).json(user)
 
         } catch (error) {
            // throw new Error("um erro foi encontrado")

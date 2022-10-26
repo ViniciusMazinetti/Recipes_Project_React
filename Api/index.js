@@ -1,6 +1,7 @@
 const express = require('express')
 const server = express()
-const userRoute = require('./userRoute')
+const userRoute = require('./Routes/userRoute')
+const recipeRoute = require('./Routes/recipeRoute')
 
 const cors = require('cors')
 const db = require("./Config/dbConnect")
@@ -11,6 +12,6 @@ db.once("open", () => {
 })
 
 server.use(cors())
-server.use(express.json(), userRoute)
+server.use(express.json(), userRoute, recipeRoute)
 
 module.exports = server

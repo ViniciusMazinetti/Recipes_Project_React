@@ -9,8 +9,8 @@ const Recipe = mongoose.model("Recipe", {
   description: String,
   ingredients: [String],
   preparation: String,
-  user: User
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 })
 
-//Exportar
+//Exportar 
 module.exports = Recipe
