@@ -56,9 +56,7 @@ class UserController {
         try {
             await user.save()
 
-            res.status(201).json({
-                msg : 'usuário criado com sucesso'
-            })
+            res.status(201).json(user)
         } catch (error) {
             res.status(500).json({
                 msg : 'erro ao cadastrar'
@@ -72,6 +70,24 @@ class UserController {
 
             const user = await User.findOne({
                 email
+            })
+
+           res.status(200).json(user)
+
+        } catch (error) {
+           // throw new Error("um erro foi encontrado")
+        }
+    
+    }
+
+    static findUserById = async (req, res) => {
+
+        try {
+
+            const {id} = req.params
+
+            const user = await User.findById ({
+                _id: id
             })
 
            res.status(200).json(user)

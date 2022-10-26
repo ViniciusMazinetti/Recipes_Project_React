@@ -1,6 +1,5 @@
 //Importar o pacote do Mongoose
 const mongoose = require('mongoose')
-const User = require('./User')
 
 //Criar entidade (tabela no banco)
 const Recipe = mongoose.model("Recipe", {
@@ -9,7 +8,7 @@ const Recipe = mongoose.model("Recipe", {
   description: String,
   ingredients: [String],
   preparation: String,
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  userId: String 
 })
 
 //Exportar 
