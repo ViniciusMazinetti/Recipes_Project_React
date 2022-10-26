@@ -8,8 +8,7 @@ const userRoute = express.Router()
 
 userRoute.get('/', UserController.welcome)
 userRoute.post('/user', UserController.createUser)
-userRoute.get('/user', UserController.findUser)
-userRoute.put('/user/:id', UserController.updateUser)
+userRoute.get('/user/:id', ensureAuthenticated, UserController.findUserById)
+userRoute.put('/user/:id', ensureAuthenticated, UserController.updateUser)
 userRoute.post('/login', UserController.login)
-userRoute.get('/token', ensureAuthenticated, UserController.welcome)
 module.exports = userRoute
