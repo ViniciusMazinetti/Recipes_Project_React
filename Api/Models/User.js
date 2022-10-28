@@ -3,9 +3,19 @@ const mongoose = require('mongoose')
 
 //Criar entidade (tabela no banco)
 const User = mongoose.model("User", {
-  name: String,
-  email: String,
-  password: String
+  name: {
+    type : String,
+    required : true
+  },
+  email: {
+    type : String,
+    required : true,
+    unique : true
+  },
+  password: {
+    type: String,
+    required: true
+  }
 })
 
 //Exportar

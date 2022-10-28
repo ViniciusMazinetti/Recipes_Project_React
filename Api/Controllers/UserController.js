@@ -12,12 +12,11 @@ class UserController {
 
     static login = async (req, res) => {
         const {email, password} = req.body
-
         const user = await this.findUser(email)
 
         if(!user) {
             res.status(422).json({
-                msg : 'usuário não encontrado'
+                msg : 'Usuário não encontrado'
             })
             return
         }
@@ -25,7 +24,9 @@ class UserController {
         const passwordMatch = await compare(password, user.password);
 
         if (!passwordMatch) {
-            console.log("um erro")
+            res.status(422).json({
+                msg : 'Senha Incorreta'
+            })
             return
         }
 
@@ -35,17 +36,27 @@ class UserController {
             const token = jwt.sign({id : user._id}, secret)
 
             res.status(200).json({
-                msg : "autenticação realizada com sucesso",
+                msg : "Autenticação realizada com sucesso",
                 token
             })
         } catch (error) {
-           // throw new Error("um erro aconteceu")
+            res.status(500).json(error)
         }
 
     }
 
     static createUser = async (req, res) => {
         const {name, email, password} = req.body
+
+        const emailVerification = await this.findUser(email)
+
+        if(emailVerification){
+            res.status(409).json({
+                msg : "email já existente"
+            })
+
+            return 
+        }
 
         const salt = await genSalt(12) 
 
@@ -58,26 +69,21 @@ class UserController {
 
             res.status(201).json(user)
         } catch (error) {
-            res.status(500).json({
-                msg : 'erro ao cadastrar'
-            })
+            res.status(500).json(error)
         }
     }
 
     static findUser = async (email) => {
 
         try {
-
             const user = await User.findOne({
                 email
             })
-
-           res.status(200).json(user)
+           return user
 
         } catch (error) {
-           // throw new Error("um erro foi encontrado")
+            res.status(500).json(error)
         }
-    
     }
 
     static findUserById = async (req, res) => {
@@ -85,15 +91,14 @@ class UserController {
         try {
 
             const {id} = req.params
-
-            const user = await User.findById ({
-                _id: id
+            const user = await User.findById({
+                _id : id
             })
 
            res.status(200).json(user)
 
         } catch (error) {
-           // throw new Error("um erro foi encontrado")
+            res.status(500).json(error)
         }
     
     }
@@ -108,12 +113,12 @@ class UserController {
 
         const passwordHash = await hash(password, salt)
 
-        const user = new User({name, email, password : passwordHash})
+        const user = {name, email, password : passwordHash}
 
         try {
             const updateUser = await User.updateOne({
                 _id : id
-            }, {user})
+            }, user)
 
 
             if(updateUser.matchedCount == 0) {
