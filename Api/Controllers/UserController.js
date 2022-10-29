@@ -36,7 +36,7 @@ class UserController {
             const token = jwt.sign({id : user._id}, secret)
 
             res.status(200).json({
-                msg : "Autenticação realizada com sucesso",
+                user,
                 token
             })
         } catch (error) {
