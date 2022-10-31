@@ -2,8 +2,8 @@ import {
   Container, TextField, Button
 } from '@mui/material'
 
-import {useState, useContext} from 'react'
-import { LoginContext } from '../../contexts/LoginContext';
+import {useState} from 'react'
+import { useAuth } from '../../contexts/LoginContext';
 
 
 function LoginPage() {
@@ -12,7 +12,7 @@ function LoginPage() {
 
   const [password, setPassword] = useState();
 
-  const {signIn} = useContext(LoginContext)
+  const {signIn} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
